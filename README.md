@@ -68,7 +68,7 @@ The control unit decodes the ALU operation in two stages:
    `ADDI`/`LW`/`SW`/`JAL` need only addition and `BEQ` needs only subtraction, so these are resolved immediately from the opcode alone.
 2. **From `ALUOp = 10`** → the four R-type instructions share one opcode (`0110011`) and are distinguished by `funct3` and `funct7[5]`, so only this case consults them.
 
-This keeps `funct3` out of the decision path for instructions where it carries unrelated information 鈥?`LW` has `funct3 = 010` (word-sized access), which has nothing to do with the ALU needing to add.
+This keeps `funct3` out of the decision path for instructions where it carries unrelated information `LW` has `funct3 = 010` (word-sized access), which has nothing to do with the ALU needing to add.
 
 ---
 
