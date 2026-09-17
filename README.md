@@ -2,7 +2,7 @@
 
 A single-cycle RISC-V (RV32I subset) processor written in Verilog, verified through simulation in Vivado/XSim.
 
-The focus of this project is not only implementing the datapath, but **proving that every instruction is actually correct** 鈥?a working sum program is not evidence that each instruction works, only that the instructions it happens to use are not broken.
+The focus of this project is not only implementing the datapath, but **proving that every instruction is actually correct** — a working sum program is not evidence that each instruction works, only that the instructions it happens to use are not broken.
 
 ---
 
@@ -14,7 +14,7 @@ The focus of this project is not only implementing the datapath, but **proving t
 | Registers | 32 general-purpose (x0 hardwired to 0) |
 | Instruction width | 32-bit |
 | Addressing | Byte-addressed, `PC = PC + 4` |
-| Microarchitecture | Single-cycle (fetch 鈫?decode 鈫?execute 鈫?memory 鈫?writeback in one clock) |
+| Microarchitecture | Single-cycle (fetch—decode—execute—memory—writeback in one clock) |
 | Toolchain | Verilog, Vivado 2025.2, XSim |
 
 ### Supported instructions
