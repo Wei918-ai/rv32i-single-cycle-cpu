@@ -26,10 +26,10 @@ The focus of this project is not only implementing the datapath, but **proving t
 | `AND`  | R | 0110011 | 111 | 0000000 | `rd = rs1 & rs2` |
 | `OR`   | R | 0110011 | 110 | 0000000 | `rd = rs1 \| rs2` |
 | `ADDI` | I | 0010011 | 000 | —| `rd = rs1 + imm` |
-| `LW`   | I | 0000011 | 010 | 鈥?| `rd = mem[rs1 + imm]` |
-| `SW`   | S | 0100011 | 010 | 鈥?| `mem[rs1 + imm] = rs2` |
-| `BEQ`  | B | 1100011 | 000 | 鈥?| `if (rs1 == rs2) PC += imm` |
-| `JAL`  | J | 1101111 | 鈥?| 鈥?| `rd = PC + 4; PC += imm` |
+| `LW`   | I | 0000011 | 010 | —| `rd = mem[rs1 + imm]` |
+| `SW`   | S | 0100011 | 010 | —| `mem[rs1 + imm] = rs2` |
+| `BEQ`  | B | 1100011 | 000 | —| `if (rs1 == rs2) PC += imm` |
+| `JAL`  | J | 1101111 | —| —| `rd = PC + 4; PC += imm` |
 
 ---
 
@@ -64,9 +64,9 @@ The focus of this project is not only implementing the datapath, but **proving t
 
 The control unit decodes the ALU operation in two stages:
 
-1. **From `opcode`** 鈫?produces a coarse `ALUOp`: `00` (add), `01` (sub), or `10` (defer).
+1. **From `opcode`** → produces a coarse `ALUOp`: `00` (add), `01` (sub), or `10` (defer).
    `ADDI`/`LW`/`SW`/`JAL` need only addition and `BEQ` needs only subtraction, so these are resolved immediately from the opcode alone.
-2. **From `ALUOp = 10`** 鈫?the four R-type instructions share one opcode (`0110011`) and are distinguished by `funct3` and `funct7[5]`, so only this case consults them.
+2. **From `ALUOp = 10`** → the four R-type instructions share one opcode (`0110011`) and are distinguished by `funct3` and `funct7[5]`, so only this case consults them.
 
 This keeps `funct3` out of the decision path for instructions where it carries unrelated information 鈥?`LW` has `funct3 = 010` (word-sized access), which has nothing to do with the ALU needing to add.
 
@@ -94,8 +94,8 @@ Every instruction was verified by a dedicated test program, not inferred from a 
 | `AND` | `15 & 9` | `x4 = 9` | Pass |
 | `OR` | `15 \| 9` | `x5 = 15` | Pass |
 | `ADDI`, negative immediate | `15 + (-1)` | `x6 = 14` | Pass |
-| `SW` 鈫?`LW`, same address | Store 15, read back | `x7 = 15` | Pass |
-| `SW` 鈫?`LW`, distinct addresses | Store 10/11/12 to `ram[0..2]`, read back | `x4,x5,x6 = 10,11,12` | Pass |
+| `SW` →`LW`, same address | Store 15, read back | `x7 = 15` | Pass |
+| `SW` →`LW`, distinct addresses | Store 10/11/12 to `ram[0..2]`, read back | `x4,x5,x6 = 10,11,12` | Pass |
 | `BEQ` taken | Loop exit when counter reaches 0 | Loop terminates | Pass |
 | `BEQ` not taken | `15 != 9`, must fall through | `x8 = 1` | Pass |
 | `JAL` jump | Loop back-edge | Loop repeats | Pass |
@@ -103,7 +103,7 @@ Every instruction was verified by a dedicated test program, not inferred from a 
 
 ### Verification techniques
 
-**Distinct test values.** The multi-address memory test writes three *different* values (10, 11, 12) to three consecutive words. If the address decode (`A[7:2]`) were off by a bit and a store landed in the wrong word, identical test values would hide the fault 鈥?distinct values make any aliasing immediately visible.
+**Distinct test values.** The multi-address memory test writes three *different* values (10, 11, 12) to three consecutive words. If the address decode (`A[7:2]`) were off by a bit and a store landed in the wrong word, identical test values would hide the fault — distinct values make any aliasing immediately visible.
 
 **Trap instructions to prove control flow.** Checking that `JAL` writes the correct return address is not sufficient to prove the jump happened: if `Jump` were misrouted and the PC never jumped, `x1` could still be written correctly and the test would pass on a false premise. A trap instruction writing an out-of-range sentinel (`addi x9, x0, 99`) is placed between the jump and its target. The jump is only confirmed if that value **never appears**. The same technique verifies `BEQ` not-taken from the opposite direction: an instruction after the branch must execute.
 
@@ -168,7 +168,7 @@ These are deliberate scope decisions, not defects:
 
 ## Design notes
 
-**Why `A[7:2]` and not `A` directly.** Addresses are byte addresses, but each memory word holds 4 bytes 鈥?`ram[0]` occupies byte addresses 0鈥?, `ram[1]` occupies 4鈥?. Converting a byte address to a word index means dividing by 4, which in binary is simply discarding the low two bits. Taking bits `[7:2]` does this and simultaneously narrows the result to the 6 bits needed to index 64 words.
+**Why `A[7:2]` and not `A` directly.** Addresses are byte addresses, but each memory word holds 4 bytes —`ram[0]` occupies byte addresses 0—, `ram[1]` occupies 4—. Converting a byte address to a word index means dividing by 4, which in binary is simply discarding the low two bits. Taking bits `[7:2]` does this and simultaneously narrows the result to the 6 bits needed to index 64 words.
 
 **Why the loop body cannot hard-code its load address.** In a loop that walks an array, the `LW` offset is a fixed field inside the instruction word and cannot change between iterations. The address must therefore come from a register used as a pointer: `lw x4, 0(x2)`, with `addi x2, x2, 4` advancing the pointer one word per iteration. This is what allows one copy of the loop body to handle an array of any length.
 
