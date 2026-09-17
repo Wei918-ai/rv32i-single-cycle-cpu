@@ -130,7 +130,6 @@ tb/                     self-checking testbenches
   tb_regfile.v
   tb_control.v
   tb_data_mem.v
-  tb_cpu.v              first bring-up (sum 1..10)
   tb_cpu_d7_full.v      per-instruction verification
   tb_cpu_multi_mem.v    multi-address memory
   tb_cpu_array_sum.v    array summation
