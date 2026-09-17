@@ -25,7 +25,7 @@ The focus of this project is not only implementing the datapath, but **proving t
 | `SUB`  | R | 0110011 | 000 | 0100000 | `rd = rs1 - rs2` |
 | `AND`  | R | 0110011 | 111 | 0000000 | `rd = rs1 & rs2` |
 | `OR`   | R | 0110011 | 110 | 0000000 | `rd = rs1 \| rs2` |
-| `ADDI` | I | 0010011 | 000 | 鈥?| `rd = rs1 + imm` |
+| `ADDI` | I | 0010011 | 000 | —| `rd = rs1 + imm` |
 | `LW`   | I | 0000011 | 010 | 鈥?| `rd = mem[rs1 + imm]` |
 | `SW`   | S | 0100011 | 010 | 鈥?| `mem[rs1 + imm] = rs2` |
 | `BEQ`  | B | 1100011 | 000 | 鈥?| `if (rs1 == rs2) PC += imm` |
