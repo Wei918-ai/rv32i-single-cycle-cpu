@@ -74,7 +74,7 @@ This keeps `funct3` out of the decision path for instructions where it carries u
 
 ## Verification
 
-Every instruction was verified by a dedicated test program, not inferred from a program that produces a correct final answer. All tests are self-checking: the testbench compares against expected values, counts mismatches, and prints a pass/fail summary 鈥?no manual waveform inspection required.
+Every instruction was verified by a dedicated test program, not inferred from a program that produces a correct final answer. All tests are self-checking: the testbench compares against expected values, counts mismatches, and prints a pass/fail summary no manual waveform inspection required.
 
 ### Test programs
 
@@ -83,7 +83,7 @@ Every instruction was verified by a dedicated test program, not inferred from a 
 | `programs/program.hex` | `tb/tb_cpu.v` | First bring-up: sum 1..10 in a loop (`ADDI`, `ADD`, `BEQ` taken, `JAL`) 鈫?`x1 = 55` |
 | `programs/program_d7_full.hex` | `tb/tb_cpu_d7_full.v` | `SUB`, `AND`, `OR`, negative-immediate `ADDI`, `LW`/`SW`, `BEQ` not-taken, `JAL` return address |
 | `programs/program_multi_mem.hex` | `tb/tb_cpu_multi_mem.v` | `LW`/`SW` across multiple distinct addresses |
-| `programs/program_array_sum.hex` | `tb/tb_cpu_array_sum.v` | Array summation: loop + memory access + branch working together 鈫?`x1 = 35` |
+| `programs/program_array_sum.hex` | `tb/tb_cpu_array_sum.v` | Array summation: loop + memory access + branch working together `x1 = 35` |
 
 ### Per-instruction results
 
