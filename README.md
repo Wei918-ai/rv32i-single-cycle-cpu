@@ -135,7 +135,6 @@ tb/                     self-checking testbenches
   tb_cpu_array_sum.v    array summation
 programs/               hand-assembled test programs (hex)
   program.hex
-  program_d7_full.hex
   program_multi_mem.hex
   program_array_sum.hex
 docs/                   design notes, waveforms
