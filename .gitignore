@@ -1,0 +1,40 @@
+# Vivado project / runtime files
+*.jou
+*.log
+*.str
+*.pb
+*.wdb
+*.wcfg
+*.rpt
+*.dcp
+*.bit
+*.ltx
+*.zip
+
+# Vivado directories
+*.cache/
+*.hw/
+*.ip_user_files/
+*.runs/
+*.sim/
+*.gen/
+*.srcs/
+*.xpr
+.Xil/
+xsim.dir/
+
+# Simulation output
+webtalk*
+usage_statistics*
+vivado*.backup.*
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
