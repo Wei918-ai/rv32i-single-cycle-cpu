@@ -80,7 +80,7 @@ Every instruction was verified by a dedicated test program, not inferred from a 
 
 | Program | Testbench | Coverage |
 |---|---|---|
-| `programs/program.hex` | `tb/tb_cpu.v` | First bring-up: sum 1..10 in a loop (`ADDI`, `ADD`, `BEQ` taken, `JAL`) 鈫?`x1 = 55` |
+| `programs/program.hex` | `tb/tb_cpu.v` | First bring-up: sum 1..10 in a loop (`ADDI`, `ADD`, `BEQ` taken, `JAL`) ，`x1 = 55` |
 | `programs/program_d7_full.hex` | `tb/tb_cpu_d7_full.v` | `SUB`, `AND`, `OR`, negative-immediate `ADDI`, `LW`/`SW`, `BEQ` not-taken, `JAL` return address |
 | `programs/program_multi_mem.hex` | `tb/tb_cpu_multi_mem.v` | `LW`/`SW` across multiple distinct addresses |
 | `programs/program_array_sum.hex` | `tb/tb_cpu_array_sum.v` | Array summation: loop + memory access + branch working together `x1 = 35` |
