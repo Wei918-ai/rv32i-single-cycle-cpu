@@ -107,7 +107,7 @@ Every instruction was verified by a dedicated test program, not inferred from a 
 
 **Trap instructions to prove control flow.** Checking that `JAL` writes the correct return address is not sufficient to prove the jump happened: if `Jump` were misrouted and the PC never jumped, `x1` could still be written correctly and the test would pass on a false premise. A trap instruction writing an out-of-range sentinel (`addi x9, x0, 99`) is placed between the jump and its target. The jump is only confirmed if that value **never appears**. The same technique verifies `BEQ` not-taken from the opposite direction: an instruction after the branch must execute.
 
-**Self-locking halt.** Programs terminate with `beq x0, x0, 0` 鈥?offset 0 with an always-true condition, so the PC branches to itself and freezes. Ending with a `nop` instead lets the PC keep incrementing into uninitialised ROM, fetching `x` and polluting the simulation output.
+**Self-locking halt.** Programs terminate with `beq x0, x0, 0` —offset 0 with an always-true condition, so the PC branches to itself and freezes. Ending with a `nop` instead lets the PC keep incrementing into uninitialised ROM, fetching `x` and polluting the simulation output.
 
 **Reset alignment.** Reset is released on a falling clock edge (`@(negedge clk)`) so that the first rising edge after release executes instruction 0. Releasing reset on a rising edge swallows the first instruction.
 
