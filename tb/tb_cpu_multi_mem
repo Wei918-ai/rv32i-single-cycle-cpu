@@ -1,0 +1,57 @@
+`timescale 1ns / 1ps
+//======================================================================
+//  tb_cpu_multi_mem  -  LW/SW multi-address verification
+//  Store 10/11/12 into ram[0]/ram[1]/ram[2] respectively, then read
+//  back into x4/x5/x6, proving that "cell selection" doesn't cross wires.
+//======================================================================
+module tb_cpu_multi_mem;
+
+    reg clk = 0;
+    reg rst;
+    integer errors = 0;
+
+    cpu dut(.clk(clk), .rst(rst));
+
+    always #5 clk = ~clk;
+
+    task check;
+        input [8*20:1] name;
+        input [31:0]   actual;
+        input [31:0]   expected;
+        begin
+            if (actual !== expected) begin
+                errors = errors + 1;
+                $display("  [FAIL] %0s = %0d  expect %0d", name, actual, expected);
+            end else begin
+                $display("  [ pass] %0s = %0d", name, actual);
+            end
+        end
+    endtask
+
+    initial begin
+        rst = 1;
+        @(negedge clk); @(negedge clk);
+        rst = 0;
+
+        #200;   // 10 straight-line instructions, 150ns is enough, leaving margin
+
+        $display("\n================================");
+        check("x1 (10)",  dut.regfile1.rf[1], 32'd10);
+        check("x2 (11)",  dut.regfile1.rf[2], 32'd11);
+        check("x3 (12)",  dut.regfile1.rf[3], 32'd12);
+        check("x4 (ram[0])",  dut.regfile1.rf[4], 32'd10);
+        check("x5 (ram[1])",  dut.regfile1.rf[5], 32'd11);
+        check("x6 (ram[2])",  dut.regfile1.rf[6], 32'd12);
+        check("ram[0]",         dut.data_mem1.ram[0], 32'd10);
+        check("ram[1]",         dut.data_mem1.ram[1], 32'd11);
+        check("ram[2]",         dut.data_mem1.ram[2], 32'd12);
+        $display("====================================================");
+
+        if (errors == 0)
+            $display(">>> All pass <<<\n");
+        else
+            $display(">>> error %0d  <<<\n", errors);
+        $finish;
+    end
+
+endmodule
