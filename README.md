@@ -137,7 +137,7 @@ programs/               hand-assembled test programs (hex)
   program.hex
   program_multi_mem.hex
   program_array_sum.hex
-docs/                   design notes, waveforms
+docs/                   design notes, datapath
 ```
 
 ---
